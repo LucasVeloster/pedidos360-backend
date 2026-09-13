@@ -1,7 +1,10 @@
 package com.pedidos360.pedidos.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pedidos360.pedidos.entity.Pedido;
 import com.pedidos360.pedidos.repository.PedidoRepository;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/pedidos")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -26,39 +31,80 @@ public class PedidoController {
         this.pedidoRepository = pedidoRepository;
     }
 
+    // GET - listar todos los pedidos
     @GetMapping
-    public List<Pedido> obtenerTodos() {
-        return pedidoRepository.findAll();
+    public ResponseEntity<List<Pedido>> obtenerTodos() {
+
+        List<Pedido> pedidos = pedidoRepository.findAll();
+
+        return ResponseEntity.ok(pedidos);
     }
 
+    // GET - buscar pedido por ID
     @GetMapping("/{id}")
-    public Pedido obtenerPorId(@PathVariable Long id) {
-        return pedidoRepository.findById(id).orElse(null);
-    }
+    public ResponseEntity<Pedido> obtenerPorId(
+            @PathVariable Long id) {
 
-    @PostMapping
-    public Pedido crear(@RequestBody Pedido pedido) {
-        return pedidoRepository.save(pedido);
-    }
+        Optional<Pedido> pedido =
+                pedidoRepository.findById(id);
 
-    @PutMapping("/{id}")
-    public Pedido actualizar(@PathVariable Long id, @RequestBody Pedido pedido) {
-        Pedido existente = pedidoRepository.findById(id).orElse(null);
-
-        if (existente == null) {
-            return null;
+        if (pedido.isPresent()) {
+            return ResponseEntity.ok(pedido.get());
         }
 
-        existente.setCliente(pedido.getCliente());
-        existente.setProducto(pedido.getProducto());
-        existente.setCantidad(pedido.getCantidad());
-        existente.setEstado(pedido.getEstado());
-
-        return pedidoRepository.save(existente);
+        return ResponseEntity.notFound().build();
     }
 
+    // POST - crear pedido
+    @PostMapping
+    public ResponseEntity<Pedido> crearPedido(
+            @Valid @RequestBody Pedido pedido) {
+
+        Pedido nuevoPedido =
+                pedidoRepository.save(pedido);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(nuevoPedido);
+    }
+
+    // PUT - actualizar pedido
+    @PutMapping("/{id}")
+    public ResponseEntity<Pedido> actualizarPedido(
+            @PathVariable Long id,
+            @Valid @RequestBody Pedido datosPedido) {
+
+        Optional<Pedido> pedidoExistente =
+                pedidoRepository.findById(id);
+
+        if (pedidoExistente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Pedido pedido = pedidoExistente.get();
+
+        pedido.setCliente(datosPedido.getCliente());
+        pedido.setProducto(datosPedido.getProducto());
+        pedido.setCantidad(datosPedido.getCantidad());
+        pedido.setEstado(datosPedido.getEstado());
+
+        Pedido pedidoActualizado =
+                pedidoRepository.save(pedido);
+
+        return ResponseEntity.ok(pedidoActualizado);
+    }
+
+    // DELETE - eliminar pedido
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarPedido(
+            @PathVariable Long id) {
+
+        if (!pedidoRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
         pedidoRepository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
