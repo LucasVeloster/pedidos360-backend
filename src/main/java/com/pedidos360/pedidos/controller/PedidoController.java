@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pedidos360.pedidos.entity.Pedido;
+import com.pedidos360.pedidos.messaging.PedidoProducer;
 import com.pedidos360.pedidos.repository.PedidoRepository;
 
 import jakarta.validation.Valid;
@@ -26,9 +27,11 @@ import jakarta.validation.Valid;
 public class PedidoController {
 
     private final PedidoRepository pedidoRepository;
+    private final PedidoProducer pedidoProducer;
 
-    public PedidoController(PedidoRepository pedidoRepository) {
+    public PedidoController(PedidoRepository pedidoRepository, PedidoProducer pedidoProducer) {
         this.pedidoRepository = pedidoRepository;
+        this.pedidoProducer = pedidoProducer;
     }
 
     // GET - listar todos los pedidos
@@ -62,6 +65,7 @@ public class PedidoController {
 
         Pedido nuevoPedido =
                 pedidoRepository.save(pedido);
+        pedidoProducer.enviarPedidoCreado(nuevoPedido);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

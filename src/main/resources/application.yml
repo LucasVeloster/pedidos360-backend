@@ -1,0 +1,18 @@
+server:
+  port: 8081
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: pedidos360
+    password: pedidos360
+
+pedidos360:
+  rabbitmq:
+    exchange: pedidos.exchange
+    queue: pedidos.notificaciones.queue
+    routing-key: pedido.creado
+    dlx: pedidos.dlx
+    dlq: pedidos.dlq
+    dlq-routing-key: pedido.fallido
