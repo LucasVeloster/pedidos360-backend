@@ -118,3 +118,29 @@ services:
       - kafka2
       - kafka3
     restart: unless-stopped
+
+  rabbitmq1:
+    image: rabbitmq:4.1-management
+    hostname: rabbitmq1
+    ports:
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: pedidos360
+      RABBITMQ_DEFAULT_PASS: pedidos360
+      RABBITMQ_ERLANG_COOKIE: pedidos360-cluster-local
+      RABBITMQ_NODENAME: rabbit@rabbitmq1
+    restart: unless-stopped
+
+  rabbitmq2:
+    image: rabbitmq:4.1-management
+    hostname: rabbitmq2
+    ports:
+      - "127.0.0.1:5673:5672"
+      - "127.0.0.1:15673:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: pedidos360
+      RABBITMQ_DEFAULT_PASS: pedidos360
+      RABBITMQ_ERLANG_COOKIE: pedidos360-cluster-local
+      RABBITMQ_NODENAME: rabbit@rabbitmq2
+    restart: unless-stopped
