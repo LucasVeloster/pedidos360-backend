@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
+@org.springframework.context.annotation.Profile("!integracion-local")
 public class SecurityConfig {
 
     // =========================================================
@@ -78,7 +79,7 @@ public class SecurityConfig {
 
             OAuth2Error error = new OAuth2Error(
                     "invalid_token",
-                    "El issuer del token no es válido.",
+                    "El issuer del token no es vÃƒÂ¡lido.",
                     null
             );
 
@@ -161,7 +162,7 @@ public class SecurityConfig {
 
 
             // -------------------------------------------------
-            // AUTORIZACIÓN
+            // AUTORIZACIÃƒâ€œN
             // -------------------------------------------------
 
             .authorizeHttpRequests(auth -> auth
@@ -196,7 +197,7 @@ public class SecurityConfig {
                         "/api/pedidos/**"
                 ).hasAuthority("SCOPE_write")
 
-                // Cualquier otra petición requiere autenticación
+                // Cualquier otra peticiÃƒÂ³n requiere autenticaciÃƒÂ³n
                 .anyRequest().authenticated()
             )
 
@@ -215,7 +216,7 @@ public class SecurityConfig {
 
 
     // =========================================================
-    // CONFIGURACIÓN CORS
+    // CONFIGURACIÃƒâ€œN CORS
     // =========================================================
 
     @Bean
@@ -235,7 +236,7 @@ public class SecurityConfig {
         configuration.addAllowedHeader("*");
 
 
-        // Métodos
+        // MÃƒÂ©todos
         configuration.addAllowedMethod("*");
 
 
@@ -243,7 +244,7 @@ public class SecurityConfig {
         configuration.setAllowCredentials(true);
 
 
-        // Registrar configuración
+        // Registrar configuraciÃƒÂ³n
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
 

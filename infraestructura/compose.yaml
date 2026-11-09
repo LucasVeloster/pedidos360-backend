@@ -144,3 +144,19 @@ services:
       RABBITMQ_ERLANG_COOKIE: pedidos360-cluster-local
       RABBITMQ_NODENAME: rabbit@rabbitmq2
     restart: unless-stopped
+
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root_local_360
+      MYSQL_DATABASE: pedidos360
+      MYSQL_USER: pedidos360
+      MYSQL_PASSWORD: pedidos360_local
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - pedidos360_mysql_data:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  pedidos360_mysql_data:
