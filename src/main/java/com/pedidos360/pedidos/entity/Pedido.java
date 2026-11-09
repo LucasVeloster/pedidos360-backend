@@ -27,6 +27,13 @@ public class Pedido {
         this.estado = estado;
     }
 
+    public Pedido(Long id, String cliente, String producto, Integer cantidad, String estado) {
+        this.id = id;
+        this.cliente = cliente;
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.estado = estado;
+    }
     public Long getId() {
         return id;
     }
