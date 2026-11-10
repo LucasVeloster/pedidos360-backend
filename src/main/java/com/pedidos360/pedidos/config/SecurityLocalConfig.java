@@ -17,7 +17,7 @@ public class SecurityLocalConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/pedidos", "/api/pedidos/**")
+                .requestMatchers("/error", "/api/pedidos", "/api/pedidos/**")
                 .permitAll()
                 .anyRequest().denyAll()
             );
