@@ -1,0 +1,21 @@
+========== COLAS Y TIPOS ==========
+Timeout: 60.0 seconds ...
+Listing queues for vhost / ...
+name	type	durable	state
+pedidos.notificaciones.queue	classic	true	running
+pedidos.dlq	classic	true	running
+pedidos.procesamiento.queue	quorum	true	running
+pedidos.auditoria.dlq	quorum	true	running
+pedidos.auditoria.queue	quorum	true	running
+pedidos.procesamiento.dlq	quorum	true	running
+
+========== REPLICAS Y NODOS ==========
+Timeout: 60.0 seconds ...
+Listing queues for vhost / ...
+name	type	leader	members	online
+pedidos.notificaciones.queue	classic	rabbit@rabbitmq1	[rabbit@rabbitmq1]	
+pedidos.dlq	classic	rabbit@rabbitmq1	[rabbit@rabbitmq1]	
+pedidos.procesamiento.queue	quorum	rabbit@rabbitmq1	[rabbit@rabbitmq1, rabbit@rabbitmq2]	[rabbit@rabbitmq1, rabbit@rabbitmq2]
+pedidos.auditoria.dlq	quorum	rabbit@rabbitmq1	[rabbit@rabbitmq1, rabbit@rabbitmq2]	[rabbit@rabbitmq1, rabbit@rabbitmq2]
+pedidos.auditoria.queue	quorum	rabbit@rabbitmq1	[rabbit@rabbitmq1, rabbit@rabbitmq2]	[rabbit@rabbitmq1, rabbit@rabbitmq2]
+pedidos.procesamiento.dlq	quorum	rabbit@rabbitmq1	[rabbit@rabbitmq1, rabbit@rabbitmq2]	[rabbit@rabbitmq1, rabbit@rabbitmq2]
